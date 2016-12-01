@@ -6,12 +6,11 @@
   "scripts": {
     "prestart": "babel-node tools/startMessage.js",
     "start": "npm-run-all --parallel server lint:watch test:watch",
-    "server": "babel-node tools/expressServer.js",
+    "server": "babel-node tools/express/server.js",
     "lint": "node_modules/.bin/esw webpack.config.* source tools",
     "lint:watch": "npm run lint -- --watch",
     "test": "mocha --reporter progress tools/testSetup.js \"source/**/*.test.js\"",
     "test:watch": "npm run test -- --watch"
-
   },
   "dependencies": {
     "babel-polyfill": "6.8.0",

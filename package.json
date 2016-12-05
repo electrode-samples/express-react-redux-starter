@@ -1,6 +1,6 @@
 {
   "name": "express-react-redux-starter",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "express react redux starter kit",
   "main": "index.js",
   "scripts": {

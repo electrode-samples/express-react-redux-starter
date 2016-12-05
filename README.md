@@ -32,7 +32,8 @@ npm start
 * react + redux
 * webpack + babel
 * mocha + expect
-* node + npm + yarn
+* node + express
+* npm + yarn
 
 [pluralsight-redux-starter]: https://github.com/coryhouse/pluralsight-redux-starter
 [react-redux-react-router-es6]: https://www.pluralsight.com/courses/react-redux-react-router-es6

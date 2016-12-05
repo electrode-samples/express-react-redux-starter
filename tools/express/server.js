@@ -28,7 +28,7 @@ server.listen(port, function(err) {
   if (err) {
     console.log(err);
   } else {
-    console.log('.love> server running @ ' + port);
+    console.log('server running @ ' + port);
     Open(`http://localhost:${port}`);
   }
 });

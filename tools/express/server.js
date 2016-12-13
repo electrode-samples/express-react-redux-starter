@@ -1,5 +1,4 @@
 import Open from 'open';
-import Path from 'path';
 import Express from 'express';
 import Webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
@@ -10,8 +9,9 @@ import { renderToString } from 'react-dom/server';
 import { createStore } from 'redux';
 import React from 'react';
 import { Provider } from 'react-redux';
+import { match, RouterContext, Router } from 'react-router';
+import routes from '../../source/routes';
 import configureStore from '../../source/store/configureStore';
-import App from '../../source/components/App';
 
 const server = Express();
 const port = 3000;
@@ -25,17 +25,31 @@ server.use(WebpackDevMiddleware(compiler, {
 
 server.use(WebpackHotMiddleware(compiler));
 
-server.get('*', handleRender);
+server.get('*', handleRoutes);
 
-function handleRender(req, res) {
+function handleRoutes(request, response) {
+  match({ routes, location: request.url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      response.status(500).send(error.message);
+    } else if (redirectLocation) {
+      response.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      handleRender(response, renderProps);
+    } else {
+      response.status(404).send('Not found');
+    }
+  });
+}
+
+function handleRender(response, renderProps) {
   const store = configureStore();
   const html = renderToString(
-    <Provider store={store}>
-      <App />
+    <Provider store={store} >
+      <RouterContext {...renderProps} />
     </Provider>
   );
   const preloadedState = store.getState();
-  res.send(renderFullPage(html, preloadedState));
+  response.status(200).send(renderFullPage(html, preloadedState));
 }
 
 function renderFullPage(html, preloadedState) {

@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 
-export default {
+let Config = {
   debug: true,
   devtool: 'inline-source-map',
   noInfo: false,
@@ -25,7 +25,24 @@ export default {
   ],
   module: {
     loaders: [
-      {test: /\.js$/, include: path.join(__dirname, 'source'), loaders: ['babel']},
+      {
+        test: /\.js$/,
+        include: path.join(__dirname, 'source'),
+        loader: 'babel',
+        query: {
+          plugins: [
+            ['react-transform', {
+              transforms: [
+                {
+                  transform: 'react-transform-hmr',
+                  imports: ['react'],
+                  locals: ['module']
+                }
+              ]
+            }]
+          ]
+        }
+      },
       {test: /(\.css)$/, loaders: ['style', 'css']},
       {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file'},
       {test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000'},
@@ -34,3 +51,5 @@ export default {
     ]
   }
 };
+
+export default Config;
